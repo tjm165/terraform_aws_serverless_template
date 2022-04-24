@@ -2,6 +2,19 @@
 
 1. Hit api/order --> gateway --> lambda --> dynamodb
 
+# MVP
+
+1. Modularize such that (un)commenting adds/removes end points to same api gateway
+1. How to clone this as your own?
+1. GET -> Lambda -> S3 welcome html
+1. POST -> Lambda Graphql -> Mutate/Query DynamoDB
+
+# Future
+
+1. POST -> Lambda Graphql -> Mutate/Query Aurora
+1. POST -> Lambda -> SQS
+1. POST -> Lambda -> Firehose
+
 # Install terraform
 
 # Terraform Serverless Template
@@ -18,25 +31,11 @@ Download the zip, unzip it, move to `sudo cp terraform /usr/local/bin`
 
 2. Lambda & API Gateway https://www.youtube.com/watch?v=wlVcso4Ut5o
 
-# Terraform Commands
+# Useful Terraform Commands
 
 `terraform fmt`
 `terraform init`
 `terraform graph` -> `https://dreampuf.github.io/GraphvizOnline/`
-
-# TODO
-
-1. Modularize
-1. Amplify
-1. Actually update amplify/lambda on changes
-1. S3 for an image
-1. API Gateway GET with query string
-1. Lambda to cloudwatch
-1. Dynamodb
-   1. explain the primary, secondary, and sort keys on DynamoDb
-1. Amplify
-1. SQS
-1. Lambda python graphql or Golang graphql
 
 # Cool Idea
 
