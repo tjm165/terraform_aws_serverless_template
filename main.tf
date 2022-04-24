@@ -2,6 +2,8 @@ provider "aws" {
   region = "us-east-2"
 }
 
+
+
 data "archive_file" "lambda-zip" {
   type        = "zip"
   source_dir  = "lambda"
@@ -47,7 +49,7 @@ resource "aws_lambda_function" "lambda" {
 }
 
 resource "aws_apigatewayv2_api" "lambda-api" {
-  name          = "v2-http-api"
+  name          = "ServerlessCoffeeOrders"
   protocol_type = "HTTP"
   tags = {
     Name        = "serverless_template"
@@ -87,6 +89,7 @@ resource "aws_lambda_permission" "api-gw" {
   source_arn    = "${aws_apigatewayv2_api.lambda-api.execution_arn}/*/*/*"
 }
 
+
 ##### Dynamo
 resource "aws_dynamodb_table" "basic-dynamodb-table" {
   name           = "ServerlessCoffeeOrders"
@@ -122,10 +125,6 @@ resource "aws_dynamodb_table" "basic-dynamodb-table" {
 
 # Only define attributes for indexes https://stackoverflow.com/questions/50006885/terraform-dynamodb-all-attributes-must-be-indexed
 
-  ttl {
-    attribute_name = "TimeToExist"
-    enabled        = false
-  }
 
 # 
   local_secondary_index { # for global just change name to global_secondary_index. 
