@@ -1,3 +1,7 @@
+# Current
+
+1. Hit api/order --> gateway --> lambda --> dynamodb
+
 # Install terraform
 
 # Terraform Serverless Template
@@ -18,16 +22,20 @@ Download the zip, unzip it, move to `sudo cp terraform /usr/local/bin`
 
 `terraform fmt`
 `terraform init`
+`terraform graph` -> `https://dreampuf.github.io/GraphvizOnline/`
 
 # TODO
 
+1. Deal with the annoying dynamo thing
+1. Modularize
 1. API Gateway GET with query string
-1. API Gateway PUT with parameters
-1. Generalize
+1. Lambda to cloudwatch
 1. Dynamodb
+   1. explain the primary, secondary, and sort keys on DynamoDb
 1. S3
 1. Amplify
 1. SQS
+1. Lambda python graphql or Golang graphql
 
 # Cool Idea
 
