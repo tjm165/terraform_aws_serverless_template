@@ -41,37 +41,17 @@ resource "aws_lambda_function" "lambda" {
   }
 }
 
-resource "aws_apigatewayv2_api" "lambda-api" {
-  name          = "ServerlessCoffeeOrders"
-  protocol_type = "HTTP"
-  tags = {
-    Name        = "serverless_template"
-    Environment = "production"
-  }
-}
-
-resource "aws_apigatewayv2_stage" "lambda-stage" {
-  api_id      = aws_apigatewayv2_api.lambda-api.id
-  name        = "$default"
-  auto_deploy = true
-  tags = {
-    Name        = "serverless_template"
-    Environment = "production"
-  }
-}
 
 resource "aws_apigatewayv2_integration" "lambda-integration" {
-  api_id               = aws_apigatewayv2_api.lambda-api.id
+  api_id               = var.api_id
   integration_type     = "AWS_PROXY"
   integration_method   = "POST"
   integration_uri      = aws_lambda_function.lambda.invoke_arn
 }
-
 resource "aws_apigatewayv2_route" "lambda_route" {
-  api_id    = aws_apigatewayv2_api.lambda-api.id
+  api_id    = var.api_id
   route_key = "GET /order"
   target    = "integrations/${aws_apigatewayv2_integration.lambda-integration.id}"
-
 }
 
 resource "aws_lambda_permission" "api-gw" {
@@ -79,7 +59,7 @@ resource "aws_lambda_permission" "api-gw" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda.arn
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.lambda-api.execution_arn}/*/*/*"
+  source_arn    = "${var.api_source_arn}/*/*/*"
 }
 
 
