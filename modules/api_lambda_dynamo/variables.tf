@@ -1,6 +1,6 @@
-variable "name" {
+variable "dynamo_name" {
     type = string
-    description = "Name for this application"
+    description = "Name to create the DynamoDB table with"
 }
 
 variable "api_id" {

@@ -1,8 +1,3 @@
-variable "lambda_name" {
-    type = string
-    description = "Name for this lambda function"
-}
-
 variable "api_id" {
     type = string
     description = "The id of an aws_apigatewayv2_api"

@@ -12,20 +12,21 @@ module "global_api_gateway" {
 }
 
 module "example_lambda" {
-  source         = "./modules/common/api_lambda_attachment"
+  # name    = "${local.name}-standalone-lambda"
+  source         = "./modules/common/api_lambda"
   route_key      = "tommy_lambda"
   method_type    = "GET"
-  source_dir     = "src/standalone_lambda"
-  lambda_name    = "${local.name}-standalone-lambda"
+  source_dir     = "src/api_lambda"
   api_id         = module.global_api_gateway.api_id
   api_source_arn = module.global_api_gateway.execution_arn
 }
 module "example_lambda_to_dynamo" {
+  // name           = local.name // should name the lambda based on method type
+  dynamo_name    = "ServerlessCoffeeShope"
   source         = "./modules/api_lambda_dynamo"
   route_key      = "tommy"
   method_type    = "GET"
-  source_dir     = "src/lambda"
-  name           = local.name // might want to make this extend example_lambda should name the lambda based on method type
+  source_dir     = "src/api_lambda_dynamo"
   api_id         = module.global_api_gateway.api_id
   api_source_arn = module.global_api_gateway.execution_arn
 }

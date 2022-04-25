@@ -1,6 +1,7 @@
-
 locals {
   zip_path = "./dist/${var.source_dir}/lambda.zip"
+    lambda_name = "lambda-${var.method_type}-${var.route_key}"
+  iam_role_name = "role-api-lambda-${var.route_key}"
 }
 
 data "archive_file" "lambda-zip" {
@@ -10,7 +11,7 @@ data "archive_file" "lambda-zip" {
 }
 
 resource "aws_iam_role" "lambda-iam" {
-  name = var.lambda_name
+  name = local.iam_role_name
   tags = {
     Name        = "serverless_template"
     Environment = "production"
@@ -34,7 +35,7 @@ EOF
 
 resource "aws_lambda_function" "lambda" {
   filename         = local.zip_path
-  function_name    = var.lambda_name
+  function_name    = local.lambda_name
   role             = aws_iam_role.lambda-iam.arn
   handler          = "lambda.lambda_handler"
   source_code_hash = data.archive_file.lambda-zip.output_base64sha256
