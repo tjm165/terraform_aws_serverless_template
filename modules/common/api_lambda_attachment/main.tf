@@ -1,5 +1,6 @@
 
 locals {
+  # zip_path = "../../../dist/${replace(var.source_dir, "/", "-")}.zip"
   zip_path = "../../../dist/${var.source_dir}.zip"
 }
 
