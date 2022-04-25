@@ -1,6 +1,6 @@
 # Terraform AWS Serverless API Template
 
-Template to write and deploy a serverless API on AWS.
+Template to write and deploy serverless APIs on AWS
 
 ## Getting Started
 
