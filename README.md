@@ -13,6 +13,8 @@ Template to write and deploy serverless APIs on AWS
 
 ### MVP Checklist
 
+- [x] DEFAULT --> Lambda
+- [x] GET --> Lambda
 - [x] GET --> Lambda --> DynamoDB
 - [ ] GET -> Lambda -> S3 welcome html
 - [ ] Specify Terraform Version
@@ -22,6 +24,7 @@ Template to write and deploy serverless APIs on AWS
 
 ### Future Work
 
+1. Naming strategy for multiple instances
 1. POST -> Lambda -> SQS
 1. POST -> Lambda -> Firehose
 

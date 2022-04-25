@@ -11,6 +11,14 @@ module "global_api_gateway" {
   name   = local.name
 }
 
+module "example_lambda_default" {
+  # name    = "${local.name}-standalone-lambda"
+  source         = "./modules/api_default_lambda"
+  source_dir     = "src/api_lambda"
+  api_id         = module.global_api_gateway.api_id
+  api_source_arn = module.global_api_gateway.execution_arn
+}
+
 module "example_lambda" {
   # name    = "${local.name}-standalone-lambda"
   source         = "./modules/common/api_lambda"
