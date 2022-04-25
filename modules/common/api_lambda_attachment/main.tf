@@ -1,7 +1,6 @@
 
 locals {
-  # zip_path = "../../../dist/${replace(var.source_dir, "/", "-")}.zip"
-  zip_path = "../../../dist/${var.source_dir}.zip"
+  zip_path = "./dist/${var.source_dir}/lambda.zip"
 }
 
 data "archive_file" "lambda-zip" {
