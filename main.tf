@@ -2,29 +2,19 @@ provider "aws" {
   region = "us-east-2"
 }
 
-
-
-resource "aws_apigatewayv2_api" "lambda-api" {
-  name          = "ServerlessCoffeeOrders"
-  protocol_type = "HTTP"
-  tags = {
-    Name        = "serverless_template"
-    Environment = "production"
-  }
+locals {
+  name = "ServerlessPillows" # remember to set your lambda to call this name
 }
 
-resource "aws_apigatewayv2_stage" "lambda-stage" {
-  api_id      = aws_apigatewayv2_api.lambda-api.id
-  name        = "$default"
-  auto_deploy = true
-  tags = {
-    Name        = "serverless_template"
-    Environment = "production"
-  }
+module "global_api_gateway" {
+  source = "./modules/api_gateway"
+    name = local.name
 }
-
-module "example1" {
+module "example_lambda_to_dynamo" {
   source = "./modules/api_lambda_dynamo"
-  api_id = aws_apigatewayv2_api.lambda-api.id
-  api_source_arn = aws_apigatewayv2_api.lambda-api.execution_arn
+  route_key = "tommy"
+  method_type = "GET"
+  name = local.name
+  api_id = module.global_api_gateway.api_id
+  api_source_arn = module.global_api_gateway.execution_arn
 }

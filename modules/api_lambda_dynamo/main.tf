@@ -6,7 +6,7 @@ data "archive_file" "lambda-zip" {
 }
 
 resource "aws_iam_role" "lambda-iam" {
-  name = "lambda-iam"
+  name = "lambda-iam-${var.name}"
   tags = {
     Name        = "serverless_template"
     Environment = "production"
@@ -30,7 +30,7 @@ EOF
 
 resource "aws_lambda_function" "lambda" {
   filename         = "lambda.zip"
-  function_name    = "lambda-function"
+  function_name    = "${var.name}-${var.method_type}-${var.route_key}"
   role             = aws_iam_role.lambda-iam.arn
   handler          = "lambda.lambda_handler"
   source_code_hash = data.archive_file.lambda-zip.output_base64sha256
@@ -50,7 +50,7 @@ resource "aws_apigatewayv2_integration" "lambda-integration" {
 }
 resource "aws_apigatewayv2_route" "lambda_route" {
   api_id    = var.api_id
-  route_key = "GET /order"
+  route_key = "${var.method_type} /${var.route_key}"
   target    = "integrations/${aws_apigatewayv2_integration.lambda-integration.id}"
 }
 
@@ -65,48 +65,28 @@ resource "aws_lambda_permission" "api-gw" {
 
 ##### Dynamo
 resource "aws_dynamodb_table" "basic-dynamodb-table" {
-  name           = "ServerlessCoffeeOrders"
+  name           = "${var.name}"
   billing_mode   = "PAY_PER_REQUEST"
   hash_key       = "Id"
-  range_key      = "Time"
+  # range_key      = "Time"
 
   attribute {
     name = "Id"
     type = "S"
   }
 
-  attribute {
-    name = "Time"
-    type = "N"
-  }
-
   # attribute {
-  #   name = "UserId"
-  #   type = "S"
-  # }
-
-  # attribute {
-  #   name = "Description"
-  #   type = "S"
-  # }
-
-  #   attribute {
-  #   name = "Quantity"
+  #   name = "Time"
   #   type = "N"
   # }
 
-
-# Only define attributes for indexes https://stackoverflow.com/questions/50006885/terraform-dynamodb-all-attributes-must-be-indexed
-
-
-# 
-  local_secondary_index { # for global just change name to global_secondary_index. 
-    name               = "TimeIndex"
-    # hash_key           = "Time" # for global uncomment this
-    range_key          = "Time"
-    projection_type    = "INCLUDE"
-    non_key_attributes = ["Id"]
-  }
+  # local_secondary_index { # for global just change name to global_secondary_index. 
+  #   name               = "TimeIndex"
+  #   # hash_key           = "Time" # for global uncomment this
+  #   range_key          = "Time"
+  #   projection_type    = "INCLUDE"
+  #   non_key_attributes = ["Id"]
+  # }
 
   server_side_encryption {
     enabled = true
@@ -123,7 +103,7 @@ resource "aws_dynamodb_table" "basic-dynamodb-table" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function
 
 resource "aws_iam_policy" "lambda_to_dynamo" {
-  name = "example_lambda_to_dynamo"
+  name = "example_lambda_to_dynamo_${var.name}"
   description = "Iam policy for example to dynamo"
   policy = <<EOF
 {
@@ -134,7 +114,6 @@ resource "aws_iam_policy" "lambda_to_dynamo" {
             "Effect": "Allow",
             "Action": "dynamodb:*",
             "Resource": [
-                "arn:aws:dynamodb:us-east-2:299774672086:table/SunriseNotes-Tags",
                 "${aws_dynamodb_table.basic-dynamodb-table.arn}"
             ]
         }
