@@ -41,7 +41,6 @@ resource "aws_lambda_function" "lambda" {
   }
 }
 
-
 resource "aws_apigatewayv2_integration" "lambda-integration" {
   api_id               = var.api_id
   integration_type     = "AWS_PROXY"
