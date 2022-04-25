@@ -27,7 +27,7 @@ Template to write and deploy serverless APIs on AWS
 
 ## Useful Terraform Commands
 
-`terraform fmt`
+`terraform fmt -recursive`
 `terraform init`
 `terraform graph` -> `https://dreampuf.github.io/GraphvizOnline/`
 

@@ -18,9 +18,9 @@ resource "aws_apigatewayv2_stage" "lambda-stage" {
 }
 
 output "api_id" {
-    value       = aws_apigatewayv2_api.lambda-api.id
+  value = aws_apigatewayv2_api.lambda-api.id
 }
 
 output "execution_arn" {
-    value       = aws_apigatewayv2_api.lambda-api.execution_arn
+  value = aws_apigatewayv2_api.lambda-api.execution_arn
 }

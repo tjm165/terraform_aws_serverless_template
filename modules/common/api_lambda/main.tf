@@ -1,6 +1,6 @@
 locals {
-  zip_path = "./dist/${var.source_dir}/lambda.zip"
-    lambda_name = "lambda-${var.method_type}-${var.route_key}"
+  zip_path      = "./dist/${var.source_dir}/lambda.zip"
+  lambda_name   = "lambda-${var.method_type}-${var.route_key}"
   iam_role_name = "role-api-lambda-${var.route_key}"
 }
 
@@ -51,10 +51,10 @@ resource "aws_lambda_function" "lambda" {
 }
 
 resource "aws_apigatewayv2_integration" "lambda-integration" {
-  api_id               = var.api_id
-  integration_type     = "AWS_PROXY"
-  integration_method   = "POST"
-  integration_uri      = aws_lambda_function.lambda.invoke_arn
+  api_id             = var.api_id
+  integration_type   = "AWS_PROXY"
+  integration_method = "POST"
+  integration_uri    = aws_lambda_function.lambda.invoke_arn
 }
 resource "aws_apigatewayv2_route" "lambda_route" {
   api_id    = var.api_id
