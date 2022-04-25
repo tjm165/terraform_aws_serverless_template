@@ -1,13 +1,19 @@
 locals {
   lambda_name = "lambda-${var.method_type}-${var.route_key}"
   dynamo_name = var.dynamo_name
-    iam_policy_name = "policy-api-lambda-${var.route_key}"
+  iam_policy_name = "policy-api-lambda-${var.route_key}"
+}
 
+output "aws_dynamodb_table" {
+  value = aws_dynamodb_table.basic-dynamodb-table
+}
+
+output "api_lambda" {
+  value = module.api_lambda
 }
 
 module "api_lambda" {
   source = "../common/api_lambda"
-  # name = "${var.name}-${var.method_type}-${var.route_key}"
   api_id=var.api_id
   api_source_arn = var.api_source_arn
   route_key = var.route_key
@@ -20,8 +26,6 @@ resource "aws_dynamodb_table" "basic-dynamodb-table" {
   name           = local.dynamo_name
   billing_mode   = "PAY_PER_REQUEST"
   hash_key       = "Id"
-  # range_key      = "Time"
-
   attribute {
     name = "Id"
     type = "S"
@@ -57,6 +61,6 @@ resource "aws_iam_policy" "lambda_to_dynamo" {
 EOF
 }
 resource "aws_iam_role_policy_attachment" "attach_lambda_to_dynamo" {
-  role       = module.api_lambda.iam_role_name
+  role       = module.api_lambda.iam_role.name
   policy_arn = aws_iam_policy.lambda_to_dynamo.arn
 }

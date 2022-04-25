@@ -4,6 +4,10 @@ locals {
   iam_role_name = "role-api-lambda-${var.route_key}"
 }
 
+output "iam_role" {
+  value = aws_iam_role.lambda-iam
+}
+
 data "archive_file" "lambda-zip" {
   type        = "zip"
   source_dir  = var.source_dir
@@ -64,8 +68,4 @@ resource "aws_lambda_permission" "api-gw" {
   function_name = aws_lambda_function.lambda.arn
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${var.api_source_arn}/*/*/*"
-}
-
-output "iam_role_name" {
-  value = aws_iam_role.lambda-iam.name
 }
