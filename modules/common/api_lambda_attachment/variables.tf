@@ -1,6 +1,6 @@
-variable "name" {
+variable "lambda_name" {
     type = string
-    description = "Name for this application"
+    description = "Name for this lambda function"
 }
 
 variable "api_id" {

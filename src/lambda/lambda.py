@@ -13,7 +13,7 @@ def lambda_handler(event, context):
 
     record_uuid = uuid4().hex
 
-    dynamodb = boto3.resource('dynamodb', region_name='us-east-2').Table("ServerlessPillows")
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-2').Table("ServerlessCoffeeShope")
     dynamodb.put_item(Item={
             'Id': record_uuid, 
             'Time': 1,
@@ -22,8 +22,12 @@ def lambda_handler(event, context):
     })
 
 
-    resp = dynamodb.get_item(Key={'Id': record_uuid})
-    print(resp)
+    result = dynamodb.get_item(Key={'Id': record_uuid})
+
+    resp = {
+        "message": "Tommy Rocks",
+        "result": result
+    }
 
     return {
         'statusCode': 200,

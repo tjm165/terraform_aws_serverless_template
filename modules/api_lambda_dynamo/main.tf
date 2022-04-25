@@ -1,66 +1,12 @@
-
-data "archive_file" "lambda-zip" {
-  type        = "zip"
-  source_dir  = "lambda"
-  output_path = "lambda.zip"
+module "api_lambda_attachment" {
+  source = "../common/api_lambda_attachment"
+  lambda_name = "${var.name}-${var.method_type}-${var.route_key}"
+  api_id=var.api_id
+  api_source_arn = var.api_source_arn
+  route_key = var.route_key
+  method_type = var.method_type
+  source_dir=var.source_dir
 }
-
-resource "aws_iam_role" "lambda-iam" {
-  name = "lambda-iam-${var.name}"
-  tags = {
-    Name        = "serverless_template"
-    Environment = "production"
-  }
-  assume_role_policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Action": "sts:AssumeRole",
-            "Principal": {
-                "Service": "lambda.amazonaws.com"
-            },
-            "Effect": "Allow",
-            "Sid": ""
-        }
-    ]
-}
-EOF
-}
-
-resource "aws_lambda_function" "lambda" {
-  filename         = "lambda.zip"
-  function_name    = "${var.name}-${var.method_type}-${var.route_key}"
-  role             = aws_iam_role.lambda-iam.arn
-  handler          = "lambda.lambda_handler"
-  source_code_hash = data.archive_file.lambda-zip.output_base64sha256
-  runtime          = "python3.8"
-  tags = {
-    Name        = "serverless_template"
-    Environment = "production"
-  }
-}
-
-resource "aws_apigatewayv2_integration" "lambda-integration" {
-  api_id               = var.api_id
-  integration_type     = "AWS_PROXY"
-  integration_method   = "POST"
-  integration_uri      = aws_lambda_function.lambda.invoke_arn
-}
-resource "aws_apigatewayv2_route" "lambda_route" {
-  api_id    = var.api_id
-  route_key = "${var.method_type} /${var.route_key}"
-  target    = "integrations/${aws_apigatewayv2_integration.lambda-integration.id}"
-}
-
-resource "aws_lambda_permission" "api-gw" {
-  statement_id  = "AllowExecutionFromAPIGateway"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.lambda.arn
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${var.api_source_arn}/*/*/*"
-}
-
 
 ##### Dynamo
 resource "aws_dynamodb_table" "basic-dynamodb-table" {
@@ -122,6 +68,6 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "attach_lambda_to_dynamo" {
-  role       = aws_iam_role.lambda-iam.name
+  role       = module.api_lambda_attachment.iam_role_name
   policy_arn = aws_iam_policy.lambda_to_dynamo.arn
 }

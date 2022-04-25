@@ -1,10 +1,15 @@
+# Get Started
+
+1. Fork this repo
+1. In `.env` update the environment variables
+1. `terraform init && terraform apply -auto-approve`
+
 # Current
 
 1. Hit api/order --> gateway --> lambda --> dynamodb
 
 # MVP
 
-1. Modularize such that (un)commenting adds/removes end points to same api gateway
 1. How to clone this as your own?
 1. GET -> Lambda -> S3 welcome html
 1. POST -> Lambda Graphql -> Mutate/Query DynamoDB
