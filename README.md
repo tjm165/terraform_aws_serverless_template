@@ -1,6 +1,7 @@
 # Get Started
 
 1. Fork this repo
+1. `cp .envsample .env`
 1. In `.env` update the environment variables
 1. `terraform init && terraform apply -auto-approve`
 
