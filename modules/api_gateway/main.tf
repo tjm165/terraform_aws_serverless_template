@@ -7,6 +7,10 @@ resource "aws_apigatewayv2_api" "lambda-api" {
   }
 }
 
+output "lambda_api" {
+  value = aws_apigatewayv2_api.lambda-api
+}
+
 resource "aws_apigatewayv2_stage" "lambda-stage" {
   api_id      = aws_apigatewayv2_api.lambda-api.id
   name        = "$default"

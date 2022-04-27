@@ -10,6 +10,11 @@ module "global_api_gateway" {
   source = "./modules/api_gateway"
   name   = local.name
 }
+output "api-endpoint"{
+  value = module.global_api_gateway.lambda_api.api_endpoint
+}
+
+
 
 module "example_lambda_default" {
   source         = "./modules/api_default_lambda"
