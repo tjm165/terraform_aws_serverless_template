@@ -48,8 +48,8 @@ module "example_lambda_to_s3" {
 
 # Demonstrate using local-exec
 resource "null_resource" "upload_s3_files" {
-    triggers = {
-    always_run = "${timestamp()}"
+  triggers = {
+    dir_sha1 = sha1(join("", [for f in fileset("src/api_lambda_s3/upload_s3_files", "*"): md5(file(f))   ]))
   }
   provisioner "local-exec" {
    command = "aws s3 cp src/api_lambda_s3/upload_s3_files s3://${module.example_lambda_to_s3.aws_s3_bucket.id}/ --recursive"
