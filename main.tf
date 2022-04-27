@@ -1,21 +1,21 @@
 provider "aws" {
   region = "us-east-2"
 }
-
 locals {
   name = "ServerlessCoffeeShope" # remember to set your lambda to call this name
 }
+output "api-endpoint" {
+  value = module.global_api_gateway.lambda_api.api_endpoint
+}
 
+### Create API Gateway
 module "global_api_gateway" {
   source = "./modules/api_gateway"
   name   = local.name
 }
-output "api-endpoint"{
-  value = module.global_api_gateway.lambda_api.api_endpoint
-}
 
 
-
+### Create a lambda as the default endpoint
 module "example_lambda_default" {
   source         = "./modules/api_default_lambda"
   source_dir     = "src/api_lambda"
@@ -23,6 +23,7 @@ module "example_lambda_default" {
   api_source_arn = module.global_api_gateway.execution_arn
 }
 
+### Create a simple lambda at a particular API path
 module "example_lambda" {
   source         = "./modules/common/api_lambda"
   route_key      = "tommy_lambda"
@@ -31,6 +32,7 @@ module "example_lambda" {
   api_id         = module.global_api_gateway.api_id
   api_source_arn = module.global_api_gateway.execution_arn
 }
+### Create a lambda --> dynamodb at a particular API path
 module "example_lambda_to_dynamo" {
   dynamo_name    = "ServerlessCoffeeShope"
   source         = "./modules/api_lambda_dynamo"
@@ -41,6 +43,7 @@ module "example_lambda_to_dynamo" {
   api_source_arn = module.global_api_gateway.execution_arn
 }
 
+### Create a lambda --> s3 at a particular API path
 module "example_lambda_to_s3" {
   source         = "./modules/api_lambda_s3"
   s3_name        = "serverlesscoffeeshops3"
