@@ -8,6 +8,7 @@ Template to write and deploy serverless APIs on AWS
 1. `cp .envsample .env`
 1. In `.env` update the environment variables
 1. `terraform init && terraform apply -auto-approve`
+1. `terraform output api-endpoint`
 
 ## Roadmap
 
@@ -30,6 +31,7 @@ Template to write and deploy serverless APIs on AWS
 
 ## Useful Terraform Commands
 
+`terraform output api-endpoint`
 `terraform fmt -recursive`
 `terraform init`
 `terraform graph | pbcopy` -> `https://dreampuf.github.io/GraphvizOnline/`
