@@ -1,6 +1,6 @@
 locals {
   lambda_name     = "lambda-${var.method_type}-${var.route_key}"
-  s3_name     = var.s3_name
+  s3_name         = var.s3_name
   iam_policy_name = "policy-api-lambda-${var.route_key}"
 }
 

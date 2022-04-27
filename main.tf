@@ -46,12 +46,23 @@ module "example_lambda_to_s3" {
   api_source_arn = module.global_api_gateway.execution_arn
 }
 
-# Demonstrate using local-exec
+### Demonstrate using local-exec
+locals {
+  upload_s3_path = "src/upload_s3_files"
+}
+# First, zip the files. This is used to get a hash of the directory
+data "archive_file" "s3_files" {
+  type        = "zip"
+  source_dir  = local.upload_s3_path
+  output_path = "dist/uploaded_s3_files.zip"
+}
+# Next, use local-exec to upload the files
 resource "null_resource" "upload_s3_files" {
+  # Use the directory hash to determine if any changes have been made
   triggers = {
-    dir_sha1 = sha1(join("", [for f in fileset("src/api_lambda_s3/upload_s3_files", "*"): md5(file(f))   ]))
+    src_hash = "${data.archive_file.s3_files.output_sha}"
   }
   provisioner "local-exec" {
-   command = "aws s3 cp src/api_lambda_s3/upload_s3_files s3://${module.example_lambda_to_s3.aws_s3_bucket.id}/ --recursive"
+    command = "aws s3 sync ${local.upload_s3_path} s3://${module.example_lambda_to_s3.aws_s3_bucket.id}/ --delete"
   }
 }
