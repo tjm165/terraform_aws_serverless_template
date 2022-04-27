@@ -32,7 +32,7 @@ Template to write and deploy serverless APIs on AWS
 
 `terraform fmt -recursive`
 `terraform init`
-`terraform graph` -> `https://dreampuf.github.io/GraphvizOnline/`
+`terraform graph | pbcopy` -> `https://dreampuf.github.io/GraphvizOnline/`
 
 ## Cool Idea
 
