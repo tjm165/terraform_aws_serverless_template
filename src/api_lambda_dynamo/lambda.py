@@ -25,7 +25,7 @@ def lambda_handler(event, context):
     result = dynamodb.get_item(Key={'Id': record_uuid})
 
     resp = {
-        "message": "Tommy Rocks",
+        "message": "hello api_lambda_dynamo",
         "result": result
     }
 

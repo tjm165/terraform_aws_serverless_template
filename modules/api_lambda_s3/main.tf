@@ -26,6 +26,7 @@ module "api_lambda" {
 ##### S3
 resource "aws_s3_bucket" "basic-s3-bucket" {
   bucket = local.s3_name
+  force_destroy = true
 }
 
 resource "aws_s3_bucket_acl" "basic-s3-bucket-acl" {

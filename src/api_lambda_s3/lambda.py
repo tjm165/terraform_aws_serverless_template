@@ -11,7 +11,7 @@ def lambda_handler(event, context):
     s3 = boto3.resource('s3')
     bucket = s3.Bucket('serverlesscoffeeshops3')
     
-    content = "<!DOCTYPE html><html><head><title>Serverless API Lambda S3</title></head><body><h1>Welcome to S3 from Lambda</h1><h2>The contents of this s3 bucket are</h2>"
+    content = "<!DOCTYPE html><html><head><title>Serverless API Lambda S3</title></head><body><h1>Welcome to api_lambda_s3</h1><h2>The contents of this s3 bucket are</h2>"
     
     for obj in bucket.objects.all():
         content += "<p> /" + obj.key + "</p>"

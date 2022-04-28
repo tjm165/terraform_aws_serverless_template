@@ -8,7 +8,7 @@ def default(obj):
 
 def lambda_handler(event, context):
     resp = {
-        "message": "Hello Tommy",
+        "message": "Hello api_lambda",
     }
 
     return {
