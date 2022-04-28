@@ -25,7 +25,7 @@ module "api_lambda_default" {
 
 ### Create a simple lambda at a particular API path
 module "api_lambda" {
-  source         = "./modules/common/api_lambda"
+  source         = "./modules/api_lambda"
   route_key      = "api_lambda"
   method_type    = "GET"
   source_dir     = "src/api_lambda"
@@ -73,4 +73,14 @@ resource "null_resource" "upload_s3_files" {
   provisioner "local-exec" {
     command = "aws s3 sync ${local.upload_s3_path} s3://${module.api_lambda_s3.aws_s3_bucket.id}/ --delete"
   }
+}
+
+### Create a lambda --> aurora at a particular API path
+module "api_lambda_aurora" {
+  source         = "./modules/api_lambda_aurora"
+  route_key      = "api_lambda_aurora"
+  method_type    = "GET"
+  source_dir     = "src/api_lambda_aurora"
+  api_id         = module.global_api_gateway.api_id
+  api_source_arn = module.global_api_gateway.execution_arn
 }

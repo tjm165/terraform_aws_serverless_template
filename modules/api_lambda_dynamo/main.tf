@@ -13,7 +13,7 @@ output "api_lambda" {
 }
 
 module "api_lambda" {
-  source         = "../common/api_lambda"
+  source         = "../common/base_api_lambda"
   api_id         = var.api_id
   api_source_arn = var.api_source_arn
   route_key      = var.route_key

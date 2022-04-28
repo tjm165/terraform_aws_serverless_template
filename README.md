@@ -23,6 +23,8 @@ Template to write and deploy serverless APIs on AWS
 - [ ] POST -> Lambda Graphql -> Mutate/Query Aurora
 - [ ] Quick start YouTube Video
 - [ ] Explore a data stack
+- [ ] tag
+- [ ] shared state
 
 ### Future Goals
 
