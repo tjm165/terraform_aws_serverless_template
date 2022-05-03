@@ -31,6 +31,7 @@ Template to write and deploy serverless APIs on AWS
 1. Improved naming strategy for multiple instances
 1. POST -> Lambda -> SQS
 1. POST -> Lambda -> Firehose
+1. Elastic Map Reduce 
 
 ## Useful Terraform Commands
 
