@@ -8,7 +8,7 @@ locals {
 variable "github_access_token" {
     type=string
     sensitive = true
-  description = "GitHub personal access token https://github.com/settings/tokens"
+  description = "GitHub personal access token https://github.com/settings/tokens - Must have write:repo_hook and read:repo_hook"
 }
 module "react_app" {
   source = "./modules/amplify_react_app"

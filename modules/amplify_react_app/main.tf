@@ -1,7 +1,3 @@
-
-
-# https://stackoverflow.com/questions/68133670/add-repository-branch-and-configure-build-on-aws-ampify-with-terraform
-
 resource "aws_amplify_app" "example" {
   name       = "Amplify"
   repository = "https://github.com/tjm165/terraform_aws_serverless_template"
@@ -39,5 +35,17 @@ resource "aws_amplify_app" "example" {
 
   environment_variables = {
     ENV = "test"
+  }
+}
+
+resource "aws_amplify_branch" "master" {
+  app_id      = aws_amplify_app.example.id
+  branch_name = "aws-amplify"
+
+  framework = "React"
+  stage     = "PRODUCTION"
+
+  environment_variables = {
+    REACT_APP_API_SERVER = "MY ENV VAR"
   }
 }
