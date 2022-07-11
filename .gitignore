@@ -4,3 +4,4 @@
 .terraform.lock.hcl
 terraform.tfstate
 /dist
+secret.tfvars
