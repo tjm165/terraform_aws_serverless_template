@@ -38,7 +38,7 @@ Template to write and deploy serverless APIs on AWS
 - `terraform output api-endpoint`
 - `terraform fmt -recursive`
 - `terraform init`
-- `terraform graph | pbcopy` -> `https://dreampuf.github.io/GraphvizOnline/`
+- `terraform graph | pbcopy` -> [Edotor](https://edotor.net/) fdp format is best
 
 ## Cool Idea
 
